@@ -31,7 +31,7 @@
       </a-entity>
     </a-scene>
     <script>
-      const bilgiler = { 0: { ad: "Afrika Pengueni", bilgi: "Güney Kutup bölgesinin sevimli sakini. Yüzmede çok yeteneklidir, saatte 20 km hıza ulaşabilir." } };
+      const bilgiler = { 0: { ad: "Çember Sakallı Penguen", bilgi: "Güney Kutup bölgesinin sevimli sakini. Başındaki sarı tüy bantlarıyla diğer penguenlerden kolayca ayrılır." } };
       [0].forEach(i => {
         const el = document.querySelector(`[mindar-image-target="targetIndex: ${i}"]`);
         el.addEventListener('targetFound', () => { document.getElementById('balik-adi').textContent = bilgiler[i].ad; document.getElementById('balik-bilgi').textContent = bilgiler[i].bilgi; document.getElementById('bilgi-panel').style.display = 'block'; });

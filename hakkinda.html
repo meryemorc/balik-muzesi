@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Proje Hakkında</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        font-family: Arial, sans-serif;
+        min-height: 100vh;
+        background: linear-gradient(180deg, #001f3f 0%, #0077b6 60%, #00b4d8 100%);
+        color: white;
+        padding: 24px;
+      }
+      #geri-btn {
+        display: inline-block;
+        color: rgba(255,255,255,0.8);
+        text-decoration: none;
+        font-size: 14px;
+        margin-bottom: 24px;
+        padding: 8px 16px;
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 20px;
+      }
+      .logo { text-align: center; font-size: 72px; margin-bottom: 12px; }
+      h1 { text-align: center; font-size: 22px; margin-bottom: 4px; }
+      .alt { text-align: center; font-size: 13px; color: #caf0f8; margin-bottom: 32px; }
+      .kart {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+      }
+      .kart h3 { font-size: 15px; color: #FFD700; margin-bottom: 8px; }
+      .kart p { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.85); }
+      .ekip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+      .ekip-kart {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 12px;
+        padding: 14px;
+        text-align: center;
+      }
+      .ekip-kart .emoji { font-size: 28px; margin-bottom: 6px; }
+      .ekip-kart .isim { font-size: 13px; font-weight: bold; }
+      .ekip-kart .rol { font-size: 11px; color: #90e0ef; margin-top: 3px; }
+      .teknoloji { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+      .tag {
+        background: rgba(0,150,199,0.3);
+        border: 1px solid rgba(0,180,216,0.4);
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 12px;
+        color: #90e0ef;
+      }
+      .alt-yazi { text-align: center; margin-top: 24px; font-size: 11px; color: #90e0ef; opacity: 0.6; padding-bottom: 20px; }
+    </style>
+  </head>
+  <body>
+    <a href="index.html" id="geri-btn">← Geri</a>
+
+    <div class="logo">🐠</div>
+    <h1>Balık Müzesi AR</h1>
+    <p class="alt">ELSAM — Elazığ Su Ürünleri Araştırma Enstitüsü</p>
+
+    <div class="kart">
+      <h3>📌 Proje Hakkında</h3>
+      <p>Bu uygulama, ELSAM Balık Müzesi'ndeki kitap sayfalarını telefonla okutarak 3D hayvan modelleri ve bilgiler sunan bir Artırılmış Gerçeklik (AR) uygulamasıdır. Herhangi bir uygulama indirmeye gerek yoktur, tarayıcıdan çalışır.</p>
+    </div>
+
+    <div class="kart">
+      <h3>🎯 Nasıl Kullanılır?</h3>
+      <p>1. Ana menüden bir ortam seçin<br>
+         2. Kamera iznine izin verin<br>
+         3. Telefonu kitap sayfasına tutun<br>
+         4. 3D model ekranda belirir<br>
+         5. Altta bilgi panelini okuyun</p>
+    </div>
+
+    <div class="kart">
+      <h3>👥 Ekip</h3>
+      <div class="ekip-grid">
+        <div class="ekip-kart">
+          <div class="emoji">👩‍💻</div>
+          <div class="isim">Meryem Oruç</div>
+          <div class="rol">Proje Yöneticisi</div>
+        </div>
+        <div class="ekip-kart">
+          <div class="emoji">👩‍💻</div>
+          <div class="isim">İslim Öcalan</div>
+          <div class="rol">AR Geliştirici</div>
+        </div>
+        <div class="ekip-kart">
+          <div class="emoji">👩‍💻</div>
+          <div class="isim">Ece Bahar</div>
+          <div class="rol">3D Modeller</div>
+        </div>
+        <div class="ekip-kart">
+          <div class="emoji">👩‍💻</div>
+          <div class="isim">Deniz Yalçın</div>
+          <div class="rol">Quiz & İçerik</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kart">
+      <h3>🛠️ Kullanılan Teknolojiler</h3>
+      <div class="teknoloji">
+        <span class="tag">HTML5</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">A-Frame</span>
+        <span class="tag">MindAR.js</span>
+        <span class="tag">Three.js</span>
+        <span class="tag">GitHub Pages</span>
+      </div>
+    </div>
+
+    <p class="alt-yazi">Yazılım Mühendisliği Güncel Konular | 2026</p>
+  </body>
+</html>

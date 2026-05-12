@@ -11,44 +11,77 @@
         min-height: 100vh;
         background: linear-gradient(180deg, #001f3f 0%, #0077b6 60%, #00b4d8 100%);
         color: white;
-        padding: 24px;
+        padding: 20px;
       }
-      .header { text-align: center; margin-bottom: 28px; padding-top: 10px; }
+      .header { text-align: center; padding: 16px 0 20px; }
       .header .logo { font-size: 56px; }
-      .header h1 { font-size: 24px; margin: 8px 0 4px; }
+      .header h1 { font-size: 22px; margin: 6px 0 4px; }
       .header p { font-size: 12px; color: #caf0f8; }
-      .grup-baslik {
-        font-size: 12px;
+
+      .bolum-baslik {
+        font-size: 11px;
         font-weight: bold;
         color: #90e0ef;
-        letter-spacing: 1px;
+        letter-spacing: 1.5px;
         text-transform: uppercase;
-        margin: 20px 0 8px;
+        margin: 20px 0 10px;
       }
-      .buton-grup { display: flex; flex-direction: column; gap: 8px; margin-bottom: 4px; }
-      .btn {
-        padding: 14px 16px;
-        border-radius: 14px;
+
+      .ozel-butonlar {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 4px;
+      }
+      .ozel-btn {
+        flex: 1;
+        padding: 16px 10px;
+        border-radius: 16px;
         border: none;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: bold;
         cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 10px;
         text-decoration: none;
         color: white;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
       }
-      .btn-ikon { font-size: 24px; width: 36px; text-align: center; }
-      .btn-metin { text-align: left; }
-      .btn-metin span { display: block; font-size: 11px; font-weight: normal; opacity: 0.75; margin-top: 2px; }
-      .btn-soguk { background: rgba(144,224,239,0.2); border: 1.5px solid rgba(144,224,239,0.4); }
-      .btn-tropikal { background: rgba(255,107,53,0.25); border: 1.5px solid rgba(255,107,53,0.4); }
-      .btn-derin { background: rgba(2,62,138,0.5); border: 1.5px solid rgba(0,180,216,0.4); }
-      .btn-yesil { background: rgba(0,128,64,0.3); border: 1.5px solid rgba(0,200,100,0.4); }
-      .btn-serbest { background: #ff6b35; border: none; }
+      .ozel-btn .ikon { font-size: 28px; }
+      .ozel-btn span { font-size: 11px; font-weight: normal; opacity: 0.8; }
       .btn-quiz { background: linear-gradient(135deg, #0096c7, #023e8a); border: 1.5px solid #90e0ef; }
-      .divider { height: 1px; background: rgba(255,255,255,0.1); margin: 16px 0; }
+      .btn-hakkinda { background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.25); }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .kart {
+        background: rgba(255,255,255,0.1);
+        border: 1.5px solid rgba(255,255,255,0.2);
+        border-radius: 16px;
+        padding: 16px 12px;
+        text-decoration: none;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 8px;
+        transition: transform 0.1s;
+      }
+      .kart:active { transform: scale(0.97); }
+      .kart .ikon { font-size: 36px; }
+      .kart .isim { font-size: 13px; font-weight: bold; line-height: 1.3; }
+      .kart .hayvanlar { font-size: 10px; color: #90e0ef; line-height: 1.4; }
+
+      .kart-soguk { border-color: rgba(144,224,239,0.4); }
+      .kart-tropikal { border-color: rgba(255,107,53,0.4); }
+      .kart-derin { border-color: rgba(0,150,200,0.4); }
+      .kart-yesil { border-color: rgba(0,200,100,0.4); }
+
       .alt-yazi { text-align: center; margin-top: 24px; font-size: 11px; color: #90e0ef; opacity: 0.6; padding-bottom: 20px; }
     </style>
   </head>
@@ -59,75 +92,85 @@
       <p>ELSAM — Denizin derinliklerini keşfedin!</p>
     </div>
 
-    <div class="buton-grup">
-      <a href="serbest.html" class="btn btn-serbest">
-        <span class="btn-ikon">🌊</span>
-        <div class="btn-metin">Serbest AR <span>Balıklar ekranda serbest yüzsün</span></div>
+    <div class="ozel-butonlar">
+      <a href="quiz.html" class="ozel-btn btn-quiz">
+        <span class="ikon">🎯</span>
+        Quiz
+        <span>Balıkları test et</span>
       </a>
-      <a href="quiz.html" class="btn btn-quiz">
-        <span class="btn-ikon">🎯</span>
-        <div class="btn-metin">Quiz <span>Balıkları ne kadar tanıyorsun?</span></div>
-      </a>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="grup-baslik">🧊 Soğuk Sular</div>
-    <div class="buton-grup">
-      <a href="kuzey-kutup.html" class="btn btn-soguk">
-        <span class="btn-ikon">🧊</span>
-        <div class="btn-metin">Kuzey Kutup Buzulları <span>Katil balina, kutup ayısı, fok</span></div>
-      </a>
-      <a href="guney-kutup.html" class="btn btn-soguk">
-        <span class="btn-ikon">🐧</span>
-        <div class="btn-metin">Güney Kutup Bölgesi <span>Penguen, deniz fili, albatros</span></div>
+      <a href="hakkinda.html" class="ozel-btn btn-hakkinda">
+        <span class="ikon">ℹ️</span>
+        Hakkında
+        <span>Proje bilgisi</span>
       </a>
     </div>
 
-    <div class="grup-baslik">🐠 Tropikal Sular</div>
-    <div class="buton-grup">
-      <a href="mercan-resifi.html" class="btn btn-tropikal">
-        <span class="btn-ikon">🪸</span>
-        <div class="btn-metin">Mercan Resifi <span>Palyaço balığı, kirpi balığı, melek balığı</span></div>
+    <div class="bolum-baslik">🧊 Soğuk Sular</div>
+    <div class="grid">
+      <a href="kuzey-kutup.html" class="kart kart-soguk">
+        <span class="ikon">🧊</span>
+        <span class="isim">Kuzey Kutup Buzulları</span>
+        <span class="hayvanlar">Katil balina, kutup ayısı, fok</span>
       </a>
-      <a href="acik-deniz.html" class="btn btn-tropikal">
-        <span class="btn-ikon">🐋</span>
-        <div class="btn-metin">Açık Denizde <span>Kambur balina, köpekbalığı, kaplumbağa</span></div>
-      </a>
-      <a href="akvaryum.html" class="btn btn-tropikal">
-        <span class="btn-ikon">🐬</span>
-        <div class="btn-metin">Akvaryumda <span>Yunus, imparator balığı, penguen</span></div>
+      <a href="guney-kutup.html" class="kart kart-soguk">
+        <span class="ikon">🐧</span>
+        <span class="isim">Güney Kutup Bölgesi</span>
+        <span class="hayvanlar">Penguen, deniz fili, albatros</span>
       </a>
     </div>
 
-    <div class="grup-baslik">🌑 Gizemli Derinlikler</div>
-    <div class="buton-grup">
-      <a href="derinlerde.html" class="btn btn-derin">
-        <span class="btn-ikon">🌑</span>
-        <div class="btn-metin">Derinlerde <span>Fener balığı, ışıldak balığı, dumbo ahtapotu</span></div>
+    <div class="bolum-baslik">🐠 Tropikal Sular</div>
+    <div class="grid">
+      <a href="mercan-resifi.html" class="kart kart-tropikal">
+        <span class="ikon">🪸</span>
+        <span class="isim">Mercan Resifi</span>
+        <span class="hayvanlar">Palyaço balığı, kirpi balığı</span>
       </a>
-      <a href="kayip-sehir.html" class="btn btn-derin">
-        <span class="btn-ikon">🏛️</span>
-        <div class="btn-metin">Kayıp Şehir <span>Ahtapot, kardinal balığı, sargoz</span></div>
+      <a href="acik-deniz.html" class="kart kart-tropikal">
+        <span class="ikon">🐋</span>
+        <span class="isim">Açık Denizde</span>
+        <span class="hayvanlar">Kambur balina, köpekbalığı</span>
       </a>
-      <a href="gemi-batigi.html" class="btn btn-derin">
-        <span class="btn-ikon">⚓</span>
-        <div class="btn-metin">Gemi Batığı <span>Barakuda, cerrah balığı, asker balığı</span></div>
-      </a>
-    </div>
-
-    <div class="grup-baslik">🌿 Yeşil Sular</div>
-    <div class="buton-grup">
-      <a href="su-alti-ormani.html" class="btn btn-yesil">
-        <span class="btn-ikon">🌿</span>
-        <div class="btn-metin">Su Altı Ormanı <span>Deniz samuru, Garibaldi balığı, kelp yengeci</span></div>
-      </a>
-      <a href="deniz-cayiri.html" class="btn btn-yesil">
-        <span class="btn-ikon">🐄</span>
-        <div class="btn-metin">Deniz Çayırlı Taban <span>Deniz ineği, kefal, bataklık kaplumbağası</span></div>
+      <a href="akvaryum.html" class="kart kart-tropikal">
+        <span class="ikon">🐬</span>
+        <span class="isim">Akvaryumda</span>
+        <span class="hayvanlar">Yunus, imparator balığı</span>
       </a>
     </div>
 
-    <p class="alt-yazi">Elazığ Su Ürünleri Araştırma Enstitüsü</p>
+    <div class="bolum-baslik">🌑 Gizemli Derinlikler</div>
+    <div class="grid">
+      <a href="derinlerde.html" class="kart kart-derin">
+        <span class="ikon">🌑</span>
+        <span class="isim">Derinlerde</span>
+        <span class="hayvanlar">Fener balığı, ışıldak balığı</span>
+      </a>
+      <a href="kayip-sehir.html" class="kart kart-derin">
+        <span class="ikon">🏛️</span>
+        <span class="isim">Kayıp Şehir</span>
+        <span class="hayvanlar">Ahtapot, kardinal balığı</span>
+      </a>
+      <a href="gemi-batigi.html" class="kart kart-derin">
+        <span class="ikon">⚓</span>
+        <span class="isim">Gemi Batığı</span>
+        <span class="hayvanlar">Barakuda, cerrah balığı</span>
+      </a>
+    </div>
+
+    <div class="bolum-baslik">🌿 Yeşil Sular</div>
+    <div class="grid">
+      <a href="su-alti-ormani.html" class="kart kart-yesil">
+        <span class="ikon">🌿</span>
+        <span class="isim">Su Altı Ormanı</span>
+        <span class="hayvanlar">Deniz samuru, Garibaldi balığı</span>
+      </a>
+      <a href="deniz-cayiri.html" class="kart kart-yesil">
+        <span class="ikon">🐄</span>
+        <span class="isim">Deniz Çayırlı Taban</span>
+        <span class="hayvanlar">Deniz ineği, kefal balığı</span>
+      </a>
+    </div>
+
+    <p class="alt-yazi">Elazığ Su Ürünleri Araştırma Enstitüsü | 2026</p>
   </body>
 </html>

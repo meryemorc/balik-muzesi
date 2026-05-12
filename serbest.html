@@ -6,81 +6,20 @@
     <title>Serbest AR</title>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { overflow: hidden; background: black; }
-      #kamera {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        object-fit: cover;
-        z-index: 0;
-      }
-      #canvas {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        z-index: 1;
-      }
-      #geri-btn {
-        position: fixed;
-        top: 16px; left: 16px;
-        background: rgba(0,0,0,0.5);
-        color: white;
-        border: none;
-        padding: 10px 18px;
-        border-radius: 50px;
-        font-size: 14px;
-        cursor: pointer;
-        z-index: 999;
-        text-decoration: none;
-      }
-      #bilgi-panel {
-        display: none;
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0,0,0,0.75);
-        color: white;
-        padding: 16px 24px;
-        border-radius: 16px;
-        text-align: center;
-        z-index: 999;
-        min-width: 280px;
-        max-width: 340px;
-        font-family: Arial, sans-serif;
-      }
+      body { overflow: hidden; font-family: Arial, sans-serif; }
+      #geri-btn { position: fixed; top: 16px; left: 16px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 10px 18px; border-radius: 50px; font-size: 14px; cursor: pointer; z-index: 999; text-decoration: none; }
+      #bilgi-panel { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); color: white; padding: 16px 24px; border-radius: 16px; text-align: center; z-index: 999; min-width: 280px; max-width: 340px; }
       #bilgi-panel h2 { font-size: 20px; margin-bottom: 6px; color: #FFD700; }
       #bilgi-panel p { font-size: 14px; line-height: 1.5; margin-bottom: 10px; }
-      #bilgi-kapat {
-        background: rgba(255,255,255,0.2);
-        color: white;
-        border: none;
-        padding: 6px 16px;
-        border-radius: 20px;
-        font-size: 13px;
-        cursor: pointer;
-      }
-      #ipucu {
-        position: fixed;
-        bottom: 80px;
-        left: 50%;
-        transform: translateX(-50%);
-        color: white;
-        font-size: 14px;
-        text-align: center;
-        background: rgba(0,0,0,0.4);
-        padding: 12px 20px;
-        border-radius: 12px;
-        z-index: 998;
-        pointer-events: none;
-        white-space: nowrap;
-        font-family: Arial, sans-serif;
-      }
+      #bilgi-kapat { background: rgba(255,255,255,0.2); color: white; border: none; padding: 6px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; }
+      #ipucu { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); color: white; font-size: 14px; text-align: center; background: rgba(0,0,0,0.4); padding: 12px 20px; border-radius: 12px; z-index: 998; white-space: nowrap; }
+      #bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, #03045e 0%, #0077b6 50%, #00b4d8 100%); z-index: 0; }
+      canvas { position: fixed; top: 0; left: 0; z-index: 1; }
+      #geri-btn, #bilgi-panel, #ipucu { z-index: 999; }
     </style>
   </head>
   <body>
-    <video id="kamera" autoplay playsinline muted></video>
-    <canvas id="canvas"></canvas>
+    <div id="bg"></div>
     <a href="index.html" id="geri-btn">← Geri</a>
     <div id="ipucu">🐠 Balıklara dokunun, bilgi alın!</div>
     <div id="bilgi-panel">
@@ -91,64 +30,65 @@
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.150.0/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.150.0/examples/js/loaders/GLTFLoader.js"></script>
-
     <script>
       const bilgiler = [
-        { ad: "Palyaço Balığı", bilgi: "Mercan resiflerinde yaşar. Boyları 8-10 cm olur. Anemon balığı olarak da bilinir.", model: "clownfish.glb", x: -0.4, y: 0.1 },
-        { ad: "Köpekbalığı", bilgi: "Açık denizlerin en güçlü avcısıdır. 400 milyon yıldan fazladır dünyada yaşamaktadır.", model: "realistic_shark.glb", x: 0.1, y: -0.1 },
-        { ad: "Deniz Samuru", bilgi: "Su altı ormanlarında yaşar. Sırtüstü yüzerek uyur. En sevimli deniz memelilerinden biridir.", model: "sky_otter.glb", x: 0.5, y: 0.15 }
+        { ad: "Palyaço Balığı", bilgi: "Mercan resiflerinin sevimli sakini. Zehirli anemon tentakelleri arasında güvenle yaşar.", model: "clownfish.glb", scale: 0.3 },
+        { ad: "Beyaz Köpekbalığı", bilgi: "Okyanusun en güçlü avcısı. Keskin dişleri ve mükemmel koku alma duyusuyla tanınır.", model: "white_shark_from_depth.glb", scale: 0.08 },
+        { ad: "Kambur Balina", bilgi: "Şarkı söyleyen balinalar olarak bilinir. Sesleri yüzlerce kilometre yayılabilir.", model: "humpback_whale.glb", scale: 0.05 },
+        { ad: "Yunus", bilgi: "Zeki ve sosyal deniz memelileri. Birbirleriyle ses çıkararak iletişim kurarlar.", model: "dolphin.glb", scale: 0.15 }
       ];
 
-      // Kamerayı başlat
-      const video = document.getElementById('kamera');
-      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false })
-        .then(stream => { video.srcObject = stream; });
-
-      // Three.js sahne
-      const canvas = document.getElementById('canvas');
-      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(window.devicePixelRatio);
+      const pozisyonlar = [
+        { x: -2.5, y: 1, z: -6 },
+        { x: 1, y: 0, z: -8 },
+        { x: 2.5, y: -1, z: -6 },
+        { x: -1, y: -1.5, z: -5 }
+      ];
 
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 100);
-      camera.position.z = 1;
+      const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.01, 100);
+      camera.position.z = 0;
 
-      // Işık
-      const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setClearColor(0x000000, 0);
+      document.body.appendChild(renderer.domElement);
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 3);
       scene.add(ambientLight);
-      const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-      dirLight.position.set(1, 1, 1);
+      const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+      dirLight.position.set(5, 10, 5);
       scene.add(dirLight);
+      const dirLight2 = new THREE.DirectionalLight(0xaaddff, 1.5);
+      dirLight2.position.set(-5, -5, 5);
+      scene.add(dirLight2);
 
-      // Modelleri yükle
       const loader = new THREE.GLTFLoader();
       const modeller = [];
 
       bilgiler.forEach((b, i) => {
         loader.load(b.model, (gltf) => {
           const model = gltf.scene;
-          model.position.set(b.x, b.y, -1);
-          model.scale.set(0.15, 0.15, 0.15);
+          model.scale.setScalar(b.scale);
+          model.position.set(pozisyonlar[i].x, pozisyonlar[i].y, pozisyonlar[i].z);
           model.userData.index = i;
           scene.add(model);
           modeller.push(model);
         });
       });
 
-      // Yüzme animasyonu
       function animate() {
         requestAnimationFrame(animate);
         const t = Date.now() * 0.001;
         modeller.forEach((m, i) => {
-          m.position.y = bilgiler[i].y + Math.sin(t + i) * 0.05;
           m.rotation.y += 0.005;
+          m.position.y = pozisyonlar[i].y + Math.sin(t + i * 1.5) * 0.15;
         });
         renderer.render(scene, camera);
       }
       animate();
 
-      // Dokunma ile bilgi
       const raycaster = new THREE.Raycaster();
       const mouse = new THREE.Vector2();
 
@@ -172,8 +112,8 @@
         }
       }
 
-      canvas.addEventListener('click', tikla);
-      canvas.addEventListener('touchend', tikla);
+      renderer.domElement.addEventListener('click', tikla);
+      renderer.domElement.addEventListener('touchend', tikla);
 
       function panelKapat() {
         document.getElementById('bilgi-panel').style.display = 'none';
