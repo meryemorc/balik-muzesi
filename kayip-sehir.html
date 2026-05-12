@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kayıp Şehir</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { overflow: hidden; font-family: Arial, sans-serif; }
+      #geri-btn { position: fixed; top: 16px; left: 16px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 10px 18px; border-radius: 50px; font-size: 14px; cursor: pointer; z-index: 999; text-decoration: none; }
+      #bilgi-panel { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); color: white; padding: 16px 24px; border-radius: 16px; text-align: center; z-index: 999; min-width: 280px; max-width: 340px; }
+      #bilgi-panel h2 { font-size: 20px; margin-bottom: 6px; color: #FFD700; }
+      #bilgi-panel p { font-size: 14px; line-height: 1.5; }
+    </style>
+  </head>
+  <body>
+    <a href="index.html" id="geri-btn">← Geri</a>
+    <div id="bilgi-panel">
+      <h2 id="balik-adi"></h2>
+      <p id="balik-bilgi"></p>
+    </div>
+    <a-scene mindar-image="imageTargetSrc: kayıpsehirTargets.mind;" color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      <a-assets>
+        <a-asset-item id="model0" src="thorny_octopus.glb"></a-asset-item>
+      </a-assets>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-gltf-model src="#model0" position="0 0 0.1" scale="0.15 0.15 0.15" animation="property: rotation; to: 0 360 0; loop: true; dur: 4000"></a-gltf-model>
+      </a-entity>
+    </a-scene>
+    <script>
+      const bilgiler = { 0: { ad: "Ahtapot", bilgi: "Kayıp şehirlerin gizemli sakini. 8 kolu olan, son derece zeki omurgasız canlılardır." } };
+      [0].forEach(i => {
+        const el = document.querySelector(`[mindar-image-target="targetIndex: ${i}"]`);
+        el.addEventListener('targetFound', () => { document.getElementById('balik-adi').textContent = bilgiler[i].ad; document.getElementById('balik-bilgi').textContent = bilgiler[i].bilgi; document.getElementById('bilgi-panel').style.display = 'block'; });
+        el.addEventListener('targetLost', () => { document.getElementById('bilgi-panel').style.display = 'none'; });
+      });
+    </script>
+  </body>
+</html>
