@@ -9,6 +9,7 @@
     <style>
       * { margin: 0; padding: 0; }
       body { overflow: hidden; }
+
       #bilgi-panel {
         display: none;
         position: fixed;
@@ -21,14 +22,40 @@
         border-radius: 12px;
         font-family: Arial, sans-serif;
         text-align: center;
-        z-index: 999;
+        z-index: 9999;
         min-width: 280px;
+        pointer-events: all;
       }
       #bilgi-panel h2 { font-size: 20px; margin-bottom: 6px; color: #FFD700; }
       #bilgi-panel p { font-size: 14px; line-height: 1.5; }
+
+      #quiz-btn {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        z-index: 9999;
+        pointer-events: all;
+        background: linear-gradient(135deg, #0096c7, #023e8a);
+        color: white;
+        border: 2px solid #90e0ef;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-size: 15px;
+        font-weight: bold;
+        font-family: Arial, sans-serif;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      #quiz-btn:hover { background: linear-gradient(135deg, #00b4d8, #0077b6); }
     </style>
   </head>
   <body>
+
+    <a id="quiz-btn" href="quiz.html">🐠 Quiz</a>
 
     <div id="bilgi-panel">
       <h2 id="balik-adi"></h2>
