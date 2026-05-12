@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Balık Quiz 🐠</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: linear-gradient(180deg, #001f3f 0%, #0077b6 60%, #00b4d8 100%);
+      color: white;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .geri {
+      display: inline-block;
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 14px;
+      margin-bottom: 16px;
+      padding: 6px 12px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      transition: all 0.2s;
+    }
+    .geri:hover { background: rgba(255,255,255,0.15); }
+    .baslik { text-align: center; font-size: 24px; font-weight: bold; margin-bottom: 6px; }
+    .alt-baslik { text-align: center; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 24px; }
+
+    /* Kategori grid */
+    #kategori-ekrani { display: block; }
+    .kategori-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+    .kategori-btn {
+      background: rgba(255,255,255,0.12);
+      border: 2px solid rgba(255,255,255,0.25);
+      border-radius: 14px;
+      color: white;
+      padding: 14px 8px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .kategori-btn:hover { background: rgba(255,255,255,0.22); transform: scale(1.03); }
+    .kategori-btn .emoji { font-size: 26px; display: block; margin-bottom: 6px; }
+    .tumu-btn {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, #0096c7, #023e8a);
+      border-color: #90e0ef;
+      padding: 16px;
+      font-size: 15px;
+    }
+
+    /* Quiz ekranı */
+    #quiz-ekrani { display: none; }
+    .ilerleme-bar {
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      height: 6px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+    .ilerleme-ic {
+      background: #90e0ef;
+      height: 100%;
+      border-radius: 10px;
+      transition: width 0.4s ease;
+    }
+    .ilerleme-yazi { font-size: 12px; color: rgba(255,255,255,0.6); text-align: right; margin-bottom: 20px; }
+    .kategori-etiketi {
+      display: inline-block;
+      font-size: 11px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 3px 10px;
+      margin-bottom: 12px;
+      color: #90e0ef;
+      font-weight: bold;
+    }
+    .soru {
+      font-size: 17px;
+      font-weight: bold;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .sik {
+      display: block;
+      background: rgba(255,255,255,0.12);
+      border: 2px solid rgba(255,255,255,0.25);
+      color: white;
+      padding: 13px 16px;
+      border-radius: 12px;
+      margin: 8px 0;
+      width: 100%;
+      font-size: 15px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .sik:hover:not(:disabled) { background: rgba(255,255,255,0.22); transform: translateX(4px); }
+    .dogru { background: rgba(0,200,100,0.35) !important; border-color: #00c864 !important; }
+    .yanlis { background: rgba(220,50,50,0.35) !important; border-color: #dc3232 !important; }
+    .bilgi-kutusu {
+      display: none;
+      background: rgba(255,255,255,0.1);
+      border-left: 3px solid #90e0ef;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-top: 12px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.5;
+    }
+
+    /* Sonuç */
+    #sonuc-ekrani { display: none; text-align: center; }
+    .sonuc-daire {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0096c7, #023e8a);
+      border: 4px solid #90e0ef;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      margin: 20px auto;
+    }
+    .sonuc-sayi { font-size: 36px; font-weight: bold; color: #FFD700; }
+    .sonuc-toplam { font-size: 14px; color: rgba(255,255,255,0.7); }
+    .sonuc-mesaj { font-size: 18px; font-weight: bold; margin: 10px 0; }
+    .sonuc-alt { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 28px; }
+    .tekrar-btn {
+      background: linear-gradient(135deg, #0096c7, #023e8a);
+      border: 2px solid #90e0ef;
+      color: white; padding: 14px 32px;
+      border-radius: 25px; font-size: 15px;
+      font-weight: bold; cursor: pointer;
+      margin: 6px; font-family: inherit; transition: all 0.2s;
+    }
+    .tekrar-btn:hover { transform: scale(1.05); }
+    .kategori-sec-btn {
+      background: rgba(255,255,255,0.12);
+      border: 2px solid rgba(255,255,255,0.3);
+      color: white; padding: 14px 32px;
+      border-radius: 25px; font-size: 15px;
+      cursor: pointer; margin: 6px;
+      font-family: inherit; transition: all 0.2s;
+    }
+    .kategori-sec-btn:hover { background: rgba(255,255,255,0.22); }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="geri">← Ana Menü</a>
+  <div class="baslik">🐠 Balık Quiz</div>
+  <div class="alt-baslik">Kitabındaki sayfaları ne kadar tanıyorsun?</div>
+
+  <!-- KATEGORİ SEÇİM -->
+  <div id="kategori-ekrani">
+    <div class="kategori-grid">
+      <button class="kategori-btn" onclick="kategoriSec('gemi')"><span class="emoji">⚓</span>Gemi Batığı</button>
+      <button class="kategori-btn" onclick="kategoriSec('akvaryum')"><span class="emoji">🐠</span>Akvaryumda</button>
+      <button class="kategori-btn" onclick="kategoriSec('cayir')"><span class="emoji">🌿</span>Deniz Çayırı</button>
+      <button class="kategori-btn" onclick="kategoriSec('guney')"><span class="emoji">🐧</span>Güney Kutbu</button>
+      <button class="kategori-btn" onclick="kategoriSec('kayip')"><span class="emoji">🏛️</span>Kayıp Şehir</button>
+      <button class="kategori-btn" onclick="kategoriSec('derin')"><span class="emoji">🌑</span>Derinlerde</button>
+      <button class="kategori-btn" onclick="kategoriSec('orman')"><span class="emoji">🌊</span>Su Altı Ormanı</button>
+      <button class="kategori-btn" onclick="kategoriSec('mercan')"><span class="emoji">🪸</span>Mercan Resifi</button>
+      <button class="kategori-btn" onclick="kategoriSec('kuzey')"><span class="emoji">🧊</span>Kuzey Kutbu</button>
+      <button class="kategori-btn" onclick="kategoriSec('acik')"><span class="emoji">🐋</span>Açık Denizde</button>
+      <button class="kategori-btn tumu-btn" onclick="kategoriSec('tumu')"><span class="emoji">🌍</span>Tüm Sorular (Karışık)</button>
+    </div>
+  </div>
+
+  <!-- QUIZ EKRANI -->
+  <div id="quiz-ekrani">
+    <div class="ilerleme-bar"><div class="ilerleme-ic" id="ilerleme-ic"></div></div>
+    <div class="ilerleme-yazi" id="ilerleme-yazi"></div>
+    <div id="quiz-alani"></div>
+  </div>
+
+  <!-- SONUÇ EKRANI -->
+  <div id="sonuc-ekrani">
+    <div class="sonuc-daire">
+      <div class="sonuc-sayi" id="sonuc-sayi"></div>
+      <div class="sonuc-toplam" id="sonuc-toplam"></div>
+    </div>
+    <div class="sonuc-mesaj" id="sonuc-mesaj"></div>
+    <div class="sonuc-alt" id="sonuc-alt"></div>
+    <br/>
+    <button class="tekrar-btn" onclick="tekrarOyna()">🔄 Tekrar Oyna</button>
+    <button class="kategori-sec-btn" onclick="kategoriEkraniGoster()">📂 Kategori Seç</button>
+  </div>
+
+  <script>
+    const tumSorular = {
+
+      gemi: {
+        ad: "⚓ Gemi Batığı",
+        sorular: [
+          {
+            soru: "Gemi batığı sayfasında kaç tane barakuda vardır?",
+            siklar: ["5", "7", "10", "12"],
+            dogru: 2,
+            bilgi: "Sayfada 10 barakuda bulunur. Barakudalar hızlı ve uzun yapılı yırtıcı balıklardır."
+          },
+          {
+            soru: "Sayfada kaç tane asker balığı sayılabilir?",
+            siklar: ["5", "7", "9", "11"],
+            dogru: 2,
+            bilgi: "9 asker balığı vardır. Asker balıkları parlak kırmızı renkleriyle tanınır ve genellikle grup halinde yüzerler."
+          },
+          {
+            soru: "Gemi batığı sayfasında kaç bayrak balığı bulunur?",
+            siklar: ["3", "6", "9", "12"],
+            dogru: 2,
+            bilgi: "9 bayrak balığı sayılır. Bayrak balıkları sırt yüzgeçlerindeki uzun dikenlerle kolayca tanınır."
+          },
+          {
+            soru: "Sayfadaki cerrah balığı sayısı kaçtır?",
+            siklar: ["5", "8", "10", "13"],
+            dogru: 2,
+            bilgi: "10 cerrah balığı vardır. Cerrah balıklarının kuyruğu yakınında keskin bir diken bulunur, bu yüzden bu ismi almışlardır."
+          }
+        ]
+      },
+
+      akvaryum: {
+        ad: "🐠 Akvaryumda",
+        sorular: [
+          {
+            soru: "Akvaryum sayfasında kaç imparator balığı vardır?",
+            siklar: ["5", "7", "10", "12"],
+            dogru: 2,
+            bilgi: "10 imparator balığı sayılır. İmparator balıkları tropikal sularda yaşayan, çarpıcı renklere sahip balıklardır."
+          },
+          {
+            soru: "Sayfada kaç tane şişe burunlu yunus görülmektedir?",
+            siklar: ["3", "5", "7", "10"],
+            dogru: 2,
+            bilgi: "7 şişe burunlu yunus vardır. Şişe burunlu yunuslar zeki ve sosyal deniz memelileridir."
+          },
+          {
+            soru: "Akvaryum sayfasında kaç iri başlı deniz kaplumbağası bulunur?",
+            siklar: ["1", "3", "5", "7"],
+            dogru: 1,
+            bilgi: "3 iri başlı deniz kaplumbağası vardır. Bu tür, büyük kafası ve güçlü çenesiyle deniz canlılarını ezer."
+          },
+          {
+            soru: "Sayfadaki saçı penguen sayısı kaçtır?",
+            siklar: ["4", "6", "8", "10"],
+            dogru: 2,
+            bilgi: "8 saçı penguen vardır. Saçı penguenler başlarındaki sarı tüy bantlarıyla diğer penguenlerden kolayca ayrılır."
+          }
+        ]
+      },
+
+      cayir: {
+        ad: "🌿 Deniz Çayırlı Deniz Tabanı",
+        sorular: [
+          {
+            soru: "Deniz çayırı sayfasında kaç kefal balığı vardır?",
+            siklar: ["5", "7", "10", "13"],
+            dogru: 2,
+            bilgi: "10 kefal bulunur. Kefal balıkları hem tuzlu hem de tatlı sularda yaşayabilen dayanıklı balıklardır."
+          },
+          {
+            soru: "Sayfada kaç sarı deniz salyangoz görebilirsin?",
+            siklar: ["4", "6", "8", "10"],
+            dogru: 2,
+            bilgi: "8 sarı deniz salyangoz vardır. Deniz salyangozları kabukları sayesinde kendilerini düşmanlardan korur."
+          },
+          {
+            soru: "Deniz çayırı sayfasındaki deniz ineği (denizineği) sayısı kaçtır?",
+            siklar: ["2", "3", "5", "7"],
+            dogru: 1,
+            bilgi: "3 deniz ineği sayılır. Deniz inekleri (manatyalar) yavaş hareket eden ve yalnızca bitki yiyen deniz memelileridir."
+          },
+          {
+            soru: "Sayfada kaç tane kelebek balığı bulunur?",
+            siklar: ["5", "8", "10", "12"],
+            dogru: 2,
+            bilgi: "10 kelebek balığı vardır. Kelebek balıkları mercan resiflerinde yaşayan, canlı renkli tropik balıklardır."
+          }
+        ]
+      },
+
+      guney: {
+        ad: "🐧 Güney Kutup Bölgesi",
+        sorular: [
+          {
+            soru: "Güney Kutbu sayfasında kaç kral penguen bulunur?",
+            siklar: ["5", "7", "10", "13"],
+            dogru: 2,
+            bilgi: "10 kral penguen vardır. Kral penguenler, imparator penguenden sonra en büyük penguen türüdür."
+          },
+          {
+            soru: "Sayfadaki balina gözlem teknesi kaç adet gösterilmiştir?",
+            siklar: ["1", "2", "3", "4"],
+            dogru: 0,
+            bilgi: "1 balina gözlem teknesi görülür. Güney Okyanusu, dev balinalar gözlemlemek için en popüler bölgelerden biridir."
+          },
+          {
+            soru: "Güney Kutbu sayfasında kaç çember saçaklı penguen vardır?",
+            siklar: ["5", "7", "9", "11"],
+            dogru: 2,
+            bilgi: "9 çember saçaklı penguen sayılır. Bu penguenler başlarındaki sarı saçımsı tüylerle tanınır."
+          },
+          {
+            soru: "Sayfadaki deniz fili sayısı kaçtır?",
+            siklar: ["3", "5", "7", "9"],
+            dogru: 1,
+            bilgi: "5 deniz fili vardır. Erkek deniz filleri 4 metreye kadar büyüyebilir ve 2 tona kadar ağırlığa ulaşabilir."
+          }
+        ]
+      },
+
+      kayip: {
+        ad: "🏛️ Kayıp Şehir",
+        sorular: [
+          {
+            soru: "Kayıp şehir sayfasında kaç tane küp bulunur?",
+            siklar: ["3", "5", "7", "9"],
+            dogru: 1,
+            bilgi: "5 küp sayılır. Kayıp şehir sayfası antik bir su altı medeniyetini tasvir ediyor."
+          },
+          {
+            soru: "Sayfada kaç kardinal balığı vardır?",
+            siklar: ["6", "8", "10", "12"],
+            dogru: 2,
+            bilgi: "10 kardinal balığı bulunur. Kardinal balıkları küçük ve parlak renkli tropikal balıklardır."
+          },
+          {
+            soru: "Kayıp şehir sayfasındaki dalgıç sayısı kaçtır?",
+            siklar: ["5", "7", "9", "11"],
+            dogru: 1,
+            bilgi: "7 dalgıç görülür. Arkeolog dalgıçlar su altı kalıntılarını incelemek için özel ekipman kullanır."
+          },
+          {
+            soru: "Sayfada kaç yeşil gözlü balık sayılabilir?",
+            siklar: ["5", "7", "9", "11"],
+            dogru: 2,
+            bilgi: "9 yeşil gözlü balık vardır. Su altı kayıp şehirleri, binlerce yıl önce deniz altında kalmış antik yerleşim yerlerini temsil eder."
+          }
+        ]
+      },
+
+      derin: {
+        ad: "🌑 Derinlerde",
+        sorular: [
+          {
+            soru: "Derinlerde sayfasında kaç fener balığı görülmektedir?",
+            siklar: ["4", "6", "8", "10"],
+            dogru: 1,
+            bilgi: "6 fener balığı vardır. Fener balıkları başlarındaki ışıldayan organla karanlık derinliklerde av çeker."
+          },
+          {
+            soru: "Sayfada kaç tane ildak balığı bulunur?",
+            siklar: ["5", "8", "10", "12"],
+            dogru: 2,
+            bilgi: "10 ildak balığı sayılır. İldak balıkları derin denizlerin soğuk sularına uyum sağlamış küçük balıklardır."
+          },
+          {
+            soru: "Derinlerde sayfasındaki derin deniz araç sayısı kaçtır?",
+            siklar: ["1", "2", "3", "4"],
+            dogru: 0,
+            bilgi: "1 deniz aracı görülür. Derin deniz araçları (batiskaf), okyanusun en karanlık köşelerini keşfetmek için kullanılır."
+          },
+          {
+            soru: "Sayfada kaç hidrotermal baca bulunur?",
+            siklar: ["5", "7", "9", "11"],
+            dogru: 1,
+            bilgi: "7 hidrotermal baca vardır. Hidrotermal bacalar, deniz tabanındaki çatlaklardan çıkan sıcak su ve minerallerle oluşur."
+          }
+        ]
+      },
+
+      orman: {
+        ad: "🌊 Su Altı Ormanı",
+        sorular: [
+          {
+            soru: "Su altı ormanı sayfasında kaç deniz samuru vardır?",
+            siklar: ["2", "4", "6", "8"],
+            dogru: 1,
+            bilgi: "4 deniz samuru vardır. Deniz samurları kelp ormanlarında yaşar ve karınları üzerinde yüzerek uyurlar."
+          },
+          {
+            soru: "Sayfada kaç Garibaldi balığı görülmektedir?",
+            siklar: ["5", "8", "10", "12"],
+            dogru: 2,
+            bilgi: "10 Garibaldi balığı sayılır. Garibaldi balıkları parlak turuncu renkleriyle su altı ormanlarında dikkat çeker."
+          },
+          {
+            soru: "Su altı ormanı sayfasındaki leopar köpek balığı sayısı kaçtır?",
+            siklar: ["1", "2", "3", "4"],
+            dogru: 1,
+            bilgi: "2 leopar köpek balığı vardır. Leopar köpekbalıkları üzerindeki benekli desenleriyle tanınır ve zararsız türlerdendir."
+          },
+          {
+            soru: "Sayfada kaç kelp yengeci bulunur?",
+            siklar: ["5", "7", "9", "11"],
+            dogru: 2,
+            bilgi: "9 kelp yengeci sayılır. Kelp yengecinin bacakları ile vücudu kelp yosununa benzeyecek şekilde kamufle olur."
+          }
+        ]
+      },
+
+      mercan: {
+        ad: "🪸 Mercan Resifi",
+        sorular: [
+          {
+            soru: "Mercan resifi sayfasında kaç palyaço balığı vardır?",
+            siklar: ["5", "8", "10", "12"],
+            dogru: 2,
+            bilgi: "10 palyaço balığı bulunur. Palyaço balıkları zehirli anemon tentakelleri arasında güvenle yaşar."
+          },
+          {
+            soru: "Sayfada kaç tane beyin mercanı sayılabilir?",
+            siklar: ["2", "4", "6", "8"],
+            dogru: 1,
+            bilgi: "4 beyin mercanı vardır. Beyin mercanları insan beynine benzeyen kıvrımlı yapılarıyla kolayca tanınır."
+          },
+          {
+            soru: "Mercan resifi sayfasındaki mercan orfozü sayısı kaçtır?",
+            siklar: ["3", "5", "7", "9"],
+            dogru: 1,
+            bilgi: "5 mercan orfozü sayılır. Mercan orfozleri büyük ve renkli yırtıcı balıklardır, mercan resiflerinin en dikkat çekici sakinlerindendir."
+          },
+          {
+            soru: "Sayfada kaç melek balığı bulunur?",
+            siklar: ["5", "8", "10", "12"],
+            dogru: 2,
+            bilgi: "10 melek balığı vardır. Melek balıkları yassı, yuvarlak yapıları ve canlı renkleriyle mercan resiflerini süsler."
+          }
+        ]
+      },
+
+      kuzey: {
+        ad: "🧊 Kuzey Kutup Buzulları",
+        sorular: [
+          {
+            soru: "Kuzey Kutup sayfasında kaç Grönland foku vardır?",
+            siklar: ["5", "8", "10", "13"],
+            dogru: 2,
+            bilgi: "10 Grönland foku sayılır. Grönland fokları soğuk Arktik sularda yaşar ve beyaz tüylü yavrularıyla tanınır."
+          },
+          {
+            soru: "Sayfada kaç kutup ayısı görülmektedir?",
+            siklar: ["2", "4", "6", "8"],
+            dogru: 1,
+            bilgi: "4 kutup ayısı vardır. Kutup ayıları buzul üzerinde avlanır ve yüzme konusunda son derece başarılıdır."
+          },
+          {
+            soru: "Kuzey Kutup sayfasındaki katil balina sayısı kaçtır?",
+            siklar: ["1", "3", "5", "7"],
+            dogru: 1,
+            bilgi: "3 katil balina sayılır. Katil balinalar (orca) Arktik sularda grup halinde avlanır ve son derece zeki hayvanlardır."
+          },
+          {
+            soru: "Sayfada kaç kapelin balığı bulunur?",
+            siklar: ["5", "8", "10", "12"],
+            dogru: 2,
+            bilgi: "10 kapelin balığı vardır. Kapelin balıkları Arktik ekosistemin temel besin kaynağıdır; foklar, balinalar ve kuşlar tarafından yenir."
+          }
+        ]
+      },
+
+      acik: {
+        ad: "🐋 Açık Denizde",
+        sorular: [
+          {
+            soru: "Açık deniz sayfasında kaç kambur balina görülmektedir?",
+            siklar: ["1", "2", "3", "4"],
+            dogru: 0,
+            bilgi: "1 kambur balina vardır. Kambur balinalar şarkı söyleyen balinaların en ünlüsüdür; sesleri yüzlerce kilometre yayılabilir."
+          },
+          {
+            soru: "Sayfada kaç tane mürekkep balığı sayılabilir?",
+            siklar: ["4", "6", "8", "10"],
+            dogru: 2,
+            bilgi: "8 mürekkep balığı vardır. Mürekkep balıkları tehlike anında mürekkep fırlatan zeki omurgasız canlılardır."
+          },
+          {
+            soru: "Açık deniz sayfasındaki yarım ay kuyruklu levrek sayısı kaçtır?",
+            siklar: ["4", "6", "8", "10"],
+            dogru: 2,
+            bilgi: "8 yarım ay kuyruklu levrek sayılır. Bu balıklar kuyruklarının yarım ay şeklindeki yapısıyla kolayca ayırt edilir."
+          },
+          {
+            soru: "Sayfada kaç uçan balık görülmektedir?",
+            siklar: ["5", "7", "9", "11"],
+            dogru: 2,
+            bilgi: "9 uçan balık vardır. Uçan balıklar büyük göğüs yüzgeçlerini kanat gibi kullanarak su yüzeyinin üzerinde süzülür."
+          }
+        ]
+      }
+
+    };
+
+    let aktifSorular = [];
+    let soruIndex = 0;
+    let puan = 0;
+    let seciliKategori = '';
+
+    function kategoriSec(kategori) {
+      seciliKategori = kategori;
+      if (kategori === 'tumu') {
+        aktifSorular = [];
+        Object.values(tumSorular).forEach(k => {
+          k.sorular.forEach(s => aktifSorular.push({...s, kategoriAd: k.ad}));
+        });
+        aktifSorular.sort(() => Math.random() - 0.5);
+      } else {
+        aktifSorular = tumSorular[kategori].sorular.map(s => ({
+          ...s, kategoriAd: tumSorular[kategori].ad
+        }));
+      }
+      soruIndex = 0;
+      puan = 0;
+      document.getElementById('kategori-ekrani').style.display = 'none';
+      document.getElementById('quiz-ekrani').style.display = 'block';
+      document.getElementById('sonuc-ekrani').style.display = 'none';
+      soruGoster();
+    }
+
+    function soruGoster() {
+      if (soruIndex >= aktifSorular.length) { sonucGoster(); return; }
+      const s = aktifSorular[soruIndex];
+      document.getElementById('ilerleme-ic').style.width = (soruIndex / aktifSorular.length * 100) + '%';
+      document.getElementById('ilerleme-yazi').textContent = `Soru ${soruIndex + 1} / ${aktifSorular.length}`;
+
+      let html = `<div class="kategori-etiketi">${s.kategoriAd}</div>`;
+      html += `<div class="soru">${soruIndex + 1}. ${s.soru}</div>`;
+      s.siklar.forEach((sik, i) => {
+        html += `<button class="sik" onclick="cevapla(${i})">${sik}</button>`;
+      });
+      html += `<div class="bilgi-kutusu" id="bilgi-kutusu">💡 ${s.bilgi}</div>`;
+      document.getElementById('quiz-alani').innerHTML = html;
+    }
+
+    function cevapla(secilen) {
+      const butonlar = document.querySelectorAll('.sik');
+      butonlar.forEach(b => b.disabled = true);
+      const s = aktifSorular[soruIndex];
+      if (secilen === s.dogru) { butonlar[secilen].classList.add('dogru'); puan++; }
+      else { butonlar[secilen].classList.add('yanlis'); butonlar[s.dogru].classList.add('dogru'); }
+      document.getElementById('bilgi-kutusu').style.display = 'block';
+      setTimeout(() => { soruIndex++; soruGoster(); }, 2200);
+    }
+
+    function sonucGoster() {
+      document.getElementById('quiz-ekrani').style.display = 'none';
+      document.getElementById('sonuc-ekrani').style.display = 'block';
+      document.getElementById('sonuc-sayi').textContent = puan;
+      document.getElementById('sonuc-toplam').textContent = `/ ${aktifSorular.length}`;
+      const oran = puan / aktifSorular.length;
+      let mesaj, alt;
+      if (oran === 1)       { mesaj = "🏆 Mükemmel! Tam puan!"; alt = "Sen gerçek bir deniz biyoloğusun!"; }
+      else if (oran >= 0.75){ mesaj = "🌟 Harika! Çok iyisin!"; alt = "Balıklar hakkında ciddi bilgi sahibisin."; }
+      else if (oran >= 0.5) { mesaj = "👍 Fena değil!"; alt = "Biraz daha çalışırsan mükemmel olursun."; }
+      else                  { mesaj = "🐟 Denizleri daha çok keşfet!"; alt = "Tekrar dene, her seferinde daha iyisin!"; }
+      document.getElementById('sonuc-mesaj').textContent = mesaj;
+      document.getElementById('sonuc-alt').textContent = alt;
+    }
+
+    function tekrarOyna() { kategoriSec(seciliKategori); }
+    function kategoriEkraniGoster() {
+      document.getElementById('kategori-ekrani').style.display = 'block';
+      document.getElementById('quiz-ekrani').style.display = 'none';
+      document.getElementById('sonuc-ekrani').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
