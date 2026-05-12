@@ -19,16 +19,16 @@
         padding: 24px;
       }
       .logo { font-size: 80px; margin-bottom: 16px; }
-      h1 { font-size: 28px; margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+      h1 { font-size: 28px; margin-bottom: 8px; }
       .alt-baslik { font-size: 14px; color: #caf0f8; margin-bottom: 48px; max-width: 280px; line-height: 1.6; }
       .buton-grup { display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 300px; }
-      .btn { padding: 18px 24px; border-radius: 16px; border: none; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 12px; text-decoration: none; transition: transform 0.1s; }
-      .btn:active { transform: scale(0.97); }
+      .btn { padding: 18px 24px; border-radius: 16px; border: none; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 12px; text-decoration: none; }
       .btn-ikon { font-size: 32px; }
       .btn-metin { text-align: left; }
       .btn-metin span { display: block; font-size: 12px; font-weight: normal; opacity: 0.85; margin-top: 2px; }
-      .btn-serbest { background: #ff6b35; color: white; box-shadow: 0 4px 20px rgba(255,107,53,0.4); }
-      .btn-okut { background: rgba(255,255,255,0.15); color: white; border: 2px solid rgba(255,255,255,0.3); }
+      .btn-serbest { background: #ff6b35; color: white; }
+      .btn-okut { background: rgba(255,255,255,0.15); color: white; border: 2px solid rgba(255,255,255,0.3) !important; }
+      .btn-quiz { background: linear-gradient(135deg, #0096c7, #023e8a); color: white; border: 2px solid #90e0ef !important; }
       .alt-yazi { margin-top: 40px; font-size: 11px; color: #90e0ef; opacity: 0.7; }
     </style>
   </head>
@@ -40,17 +40,15 @@
     <div class="buton-grup">
       <a href="serbest.html" class="btn btn-serbest">
         <span class="btn-ikon">🌊</span>
-        <div class="btn-metin">
-          Serbest AR
-          <span>Balıklar ekranda serbest yüzsün</span>
-        </div>
+        <div class="btn-metin">Serbest AR <span>Balıklar ekranda serbest yüzsün</span></div>
       </a>
       <a href="okut.html" class="btn btn-okut">
         <span class="btn-ikon">📖</span>
-        <div class="btn-metin">
-          Kitap / Akvaryum Okut
-          <span>Görsele tut, balığı tanı</span>
-        </div>
+        <div class="btn-metin">Kitap / Akvaryum Okut <span>Görsele tut, balığı tanı</span></div>
+      </a>
+      <a href="quiz.html" class="btn btn-quiz">
+        <span class="btn-ikon">🐠</span>
+        <div class="btn-metin">Quiz <span>Balıkları ne kadar tanıyorsun?</span></div>
       </a>
     </div>
 
