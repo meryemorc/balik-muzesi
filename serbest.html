@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Serbest AR</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { overflow: hidden; font-family: Arial, sans-serif; }
+
+      #geri-btn {
+        position: fixed;
+        top: 16px; left: 16px;
+        background: rgba(0,0,0,0.5);
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 50px;
+        font-size: 14px;
+        cursor: pointer;
+        z-index: 999;
+        text-decoration: none;
+      }
+
+      #bilgi-panel {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.75);
+        color: white;
+        padding: 16px 24px;
+        border-radius: 16px;
+        text-align: center;
+        z-index: 999;
+        min-width: 280px;
+        max-width: 340px;
+      }
+      #bilgi-panel h2 { font-size: 20px; margin-bottom: 6px; color: #FFD700; }
+      #bilgi-panel p { font-size: 14px; line-height: 1.5; margin-bottom: 10px; }
+      #bilgi-kapat {
+        background: rgba(255,255,255,0.2);
+        color: white;
+        border: none;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      #ipucu {
+        position: fixed;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-size: 14px;
+        text-align: center;
+        background: rgba(0,0,0,0.4);
+        padding: 12px 20px;
+        border-radius: 12px;
+        z-index: 998;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+
+    <a href="index.html" id="geri-btn">← Geri</a>
+    <div id="ipucu">🐠 Balıklara dokunun, bilgi alın!</div>
+
+    <div id="bilgi-panel">
+      <h2 id="balik-adi"></h2>
+      <p id="balik-bilgi"></p>
+      <button id="bilgi-kapat" onclick="panelKapat()">Kapat</button>
+    </div>
+
+    <a-scene
+      embedded
+      arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best;"
+      vr-mode-ui="enabled: false"
+      renderer="logarithmicDepthBuffer: true; colorManagement: true;"
+    >
+      <a-assets>
+        <a-asset-item id="palyaco-model" src="clownfish.glb"></a-asset-item>
+        <a-asset-item id="kopek-model" src="realistic_shark.glb"></a-asset-item>
+        <a-asset-item id="samur-model" src="sky_otter.glb"></a-asset-item>
+      </a-assets>
+
+      <a-gltf-model
+        id="palyaco"
+        src="#palyaco-model"
+        position="-1.5 0 -4"
+        scale="0.4 0.4 0.4"
+        animation="property: position; to: -1.5 0.4 -4; dir: alternate; loop: true; dur: 2000; easing: easeInOutSine"
+        class="clickable"
+        cursor-listener>
+      </a-gltf-model>
+
+      <a-gltf-model
+        id="kopek"
+        src="#kopek-model"
+        position="0 0 -5"
+        scale="0.5 0.5 0.5"
+        animation="property: position; to: 0 -0.4 -5; dir: alternate; loop: true; dur: 2500; easing: easeInOutSine"
+        class="clickable"
+        cursor-listener>
+      </a-gltf-model>
+
+      <a-gltf-model
+        id="samur"
+        src="#samur-model"
+        position="1.5 0 -4"
+        scale="0.4 0.4 0.4"
+        animation="property: position; to: 1.5 0.4 -4; dir: alternate; loop: true; dur: 1800; easing: easeInOutSine"
+        class="clickable"
+        cursor-listener>
+      </a-gltf-model>
+
+      <a-camera>
+        <a-cursor fuse="false" raycaster="objects: .clickable"></a-cursor>
+      </a-camera>
+    </a-scene>
+
+    <script>
+      const bilgiler = {
+        palyaco: { ad: "Palyaço Balığı", bilgi: "Mercan resiflerinde yaşar. Boyları 8-10 cm olur. Anemon balığı olarak da bilinir." },
+        kopek:   { ad: "Köpekbalığı",    bilgi: "Açık denizlerin en güçlü avcısıdır. 400 milyon yıldan fazladır dünyada yaşamaktadır." },
+        samur:   { ad: "Deniz Samuru",   bilgi: "Su altı ormanlarında yaşar. Sırtüstü yüzerek uyur. En sevimli deniz memelilerinden biridir." }
+      };
+
+      AFRAME.registerComponent('cursor-listener', {
+        init: function () {
+          this.el.addEventListener('click', () => {
+            const id = this.el.id;
+            if (bilgiler[id]) {
+              document.getElementById('balik-adi').textContent = bilgiler[id].ad;
+              document.getElementById('balik-bilgi').textContent = bilgiler[id].bilgi;
+              document.getElementById('bilgi-panel').style.display = 'block';
+              document.getElementById('ipucu').style.display = 'none';
+            }
+          });
+        }
+      });
+
+      function panelKapat() {
+        document.getElementById('bilgi-panel').style.display = 'none';
+      }
+    </script>
+  </body>
+</html>
